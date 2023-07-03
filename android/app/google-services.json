@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "272794623322",
+    "project_id": "ecommerce-usama-elgendy",
+    "storage_bucket": "ecommerce-usama-elgendy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272794623322:android:2a69f721b702dfa172a763",
+        "android_client_info": {
+          "package_name": "com.example.e_commerce_usama_elgendy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272794623322-tifi1norejpkf9jplt1s19l85rj3gk7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_commerce_usama_elgendy",
+            "certificate_hash": "129eb588e2f3d438bd5b5b07a32114590f0595ed"
+          }
+        },
+        {
+          "client_id": "272794623322-3umh4j12ifmbaqnlmdtjfaucklqh4pcr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI1Za4W6fMZXlFr8qkbhm94Mk97Lu-OIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272794623322-3umh4j12ifmbaqnlmdtjfaucklqh4pcr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
