@@ -10,11 +10,16 @@ class ExploreController extends GetxController {
 
   List<CategoryModel> get categoryList => _categoryList ;
 
+  bool isLoading = false ;
+
   void getCategoriesFromFireStore ()async{
+    isLoading = true ;
      await FireBaseFun.getCategoriesFromFire().then((category) {
        print(category);
        _categoryList = category ;
      });
+     isLoading = false ;
+     update();
   }
   @override
   void onInit() {

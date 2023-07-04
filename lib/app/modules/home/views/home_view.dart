@@ -1,4 +1,5 @@
 import 'package:e_commerce_usama_elgendy/app/modules/auth/views/widgets/text_widget.dart';
+import 'package:e_commerce_usama_elgendy/app/modules/home/views/scaffold_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,17 +14,6 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: GetBuilder(
-          init: HomeController(),
-            builder: (controller) {
-            return BottomNavigatorWidget();
-            }),
-        body: Obx ((){
-          return controller.tabsList.value[controller.selectedIndex.value];
-        })
-      ),
-    );
+    return HomeScaffold();
   }
 }

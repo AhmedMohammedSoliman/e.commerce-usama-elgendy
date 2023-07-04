@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_usama_elgendy/app/config/fireBase_fun.dart';
 import 'package:e_commerce_usama_elgendy/app/data/category_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../auth/views/widgets/text_widget.dart';
@@ -18,17 +19,31 @@ class ExploreView extends GetWidget<ExploreController> {
          SizedBox(
            height: 40,
          ),
-         Container(
-           decoration: BoxDecoration(
-               borderRadius: BorderRadius.circular(20) ,
-               color: Colors.grey.shade200
-           ),
-           child: TextFormField(
-             decoration: InputDecoration(
-                 border : InputBorder.none ,
-                 prefixIcon: Icon(Icons.search , color: Colors.black,)
+         Row(
+           children: [
+             Expanded(
+               child: Container(
+                 decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(20) ,
+                     color: Colors.grey.shade200
+                 ),
+                 child: TextFormField(
+                   decoration: InputDecoration(
+                     hintText: "Search",
+                       border : InputBorder.none ,
+                       prefixIcon: Icon(Icons.search , color: Colors.black,)
+                   ),
+                 ),
+               ),
              ),
-           ),
+             SizedBox(width: 20,),
+             InkWell(
+               onTap: ()async{
+                 FirebaseAuth auth = FirebaseAuth.instance;
+                 await auth.signOut();
+               },
+                 child: Icon(Icons.logout , color: Colors.black87,))
+           ],
          ) ,
          SizedBox(
            height: 40,
@@ -43,30 +58,38 @@ class ExploreView extends GetWidget<ExploreController> {
          GetBuilder(
            init: ExploreController(),
            builder: (controller) {
-             return Container(
-               height: MediaQuery.of(context).size.height*0.1,
-               child: ListView.separated(
-                   scrollDirection: Axis.horizontal,
-                   itemBuilder: (context , index) => Column(
-                     children: [
-                       Container(
-                           height : MediaQuery.of(context).size.height*0.05,
-                           child: Image.asset(controller.names[index],
-                               width: 80)),
-                       Container(
-                         child: Text(controller.names[index]),
-                       ),
-                     ],
-                   ),
-                   separatorBuilder: (context , index) => SizedBox(width: 10,),
-                   itemCount: controller.names.length),
-             );
+             if (controller.isLoading){
+               return const Center(child: CircularProgressIndicator(),);
+             }else {
+               return SizedBox(
+                 height: MediaQuery.of(context).size.height*0.1,
+                 child: ListView.separated(
+                     scrollDirection: Axis.horizontal,
+                     itemBuilder: (context , index) => Column(
+                       children: [
+                         Container(
+                             height : MediaQuery.of(context).size.height*0.05,
+                             child: Image.network(controller.categoryList[index].image),
+                             width: 80),
+                         Container(
+                           child: Text(controller.categoryList[index].title),
+                         ),
+                       ],
+                     ),
+                     separatorBuilder: (context , index) => SizedBox(width: 10,),
+                     itemCount: controller.categoryList.length),
+               );
+             }
            },
          ) ,
          Row(
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
            children: [
              textWidget(color: Colors.black , fontSize: 20 ,
                  fontWeight: FontWeight.bold , text: "Best Selling"),
+
+             textWidget(color: Colors.green , fontSize: 18 ,
+                 fontWeight: FontWeight.bold , text: "See All"),
            ],
          ) ,
          SizedBox(height: 20,),
