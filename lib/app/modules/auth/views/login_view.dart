@@ -1,3 +1,4 @@
+import 'package:e_commerce_usama_elgendy/app/modules/auth/views/register_view.dart';
 import 'package:e_commerce_usama_elgendy/app/modules/auth/views/widgets/button_widget.dart';
 import 'package:e_commerce_usama_elgendy/app/modules/auth/views/widgets/text_field_widget.dart';
 import 'package:e_commerce_usama_elgendy/app/modules/auth/views/widgets/text_widget.dart';
@@ -29,7 +30,7 @@ class LoginView extends GetView<AuthController> {
               ]
             ),
             child: Form(
-              key: controller.formKey,
+              key: controller.loginFormKey,
               child: SingleChildScrollView(
                 child: Column (
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -42,10 +43,15 @@ class LoginView extends GetView<AuthController> {
                          fontWeight: FontWeight.bold ,
                          fontSize: 20,
                        ),
-                       textWidget(
-                         text: "Sign up" ,
-                         fontWeight: FontWeight.bold ,
-                         color: Colors.green
+                       InkWell(
+                         onTap: (){
+                           Get.to(RegisterView());
+                         },
+                         child: textWidget(
+                           text: "Sign up" ,
+                           fontWeight: FontWeight.bold ,
+                           color: Colors.green
+                         ),
                        ),
                      ],
                    ) ,
@@ -77,7 +83,7 @@ class LoginView extends GetView<AuthController> {
                         return null ;
                       }
                     }, onChanged: (text){
-                       controller.emailController.text = text ;
+                       controller.email = text ;
                       },),
                     SizedBox(height: 40,),
                     Row(
@@ -98,7 +104,7 @@ class LoginView extends GetView<AuthController> {
                           return null ;
                         }
                       }, onChanged: (text){
-                        controller.passwordController.text = text ;
+                        controller.password = text ;
                       },) ,
                       SizedBox(height: 20,),
                     Row(
@@ -118,7 +124,9 @@ class LoginView extends GetView<AuthController> {
                         text: "SIGN IN",
                         textColor: Colors.white,
                         onPressed: (){
-
+                         if (controller.loginFormKey.currentState!.validate() == true){
+                           controller.signInEmailPassword();
+                         }
                         } ,
                       ),
                     ) ,
@@ -137,7 +145,6 @@ class LoginView extends GetView<AuthController> {
                         text: "Sign in with faceBook",
                         textColor: Colors.black,
                         onPressed: (){
-
                         } ,
                       ),
                     ) ,
