@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'package:e_commerce_usama_elgendy/app/config/fireBase_fun.dart';
 import 'package:e_commerce_usama_elgendy/app/data/best_products_model.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../../../data/category_model.dart';
+import 'package:new_version/new_version.dart';
 
 class ExploreController extends GetxController {
 
@@ -24,10 +28,27 @@ class ExploreController extends GetxController {
 
   @override
   void onInit() {
+    final newVersion = NewVersion(
+        androidId: "com.snapShat.android"
+    );
+    Timer(Duration (seconds: 1) , () => checkNewVersion(newVersion),);
     getCategoriesFromFireStore();
     getBestProductsFromFireStore();
     print(_foundList);
     super.onInit();
+  }
+
+  void checkNewVersion (NewVersion newVersion)async {
+    final status = await newVersion.getVersionStatus();
+    if (status != null){
+      newVersion.showUpdateDialog(
+          context: Get.context!,
+          versionStatus: status ,
+          updateButtonText: "Update" ,
+      dismissButtonText: "Skip" ,
+      dialogTitle: "Update !!" ,
+      dialogText: "New version is available on store ${status.storeVersion}");
+    }
   }
 
   void getCategoriesFromFireStore ()async{
