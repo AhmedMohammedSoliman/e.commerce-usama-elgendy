@@ -13,7 +13,8 @@ class CardController extends GetxController {
   List<CardModel> _cardList = [] ;
   List<CardModel> get cardList => _cardList ;
   bool isLoading = false ;
-  int count = 1 ;
+
+  List<String> productIds = [] ;
 
   @override
   void onInit() {
@@ -31,8 +32,38 @@ class CardController extends GetxController {
     super.onClose();
   }
 
+
+  void addCardFromFire(String productId , String title , String price , String image ,)async{
+    for (var product in cardList){
+      productIds.add(product.id);
+    }
+    bool isExist = productIds.contains(productId);
+    if (isExist == true){
+      print(productIds);
+      Get.back();
+      Get.snackbar("Added failed", "Product already exist in card");
+    }else {
+      try{
+        await FireBaseFun.addToCardFireStore(CardModel(
+            price: price,
+            title: title,
+            image: image,
+            quantity: 1),
+            productId ,).then((value) {
+          print("added");
+          Get.back();
+          Get.snackbar("Added success", "Product added to card");
+        });
+      }catch (e){
+        rethrow ;
+      }
+    }
+    update();
+  }
+
   void getCardFromFire ()async{
    isLoading = true ;
+   print("cardList");
     await FireBaseFun.getCardFromFireBase().then((value) {
       _cardList = value ;
       print(value);
@@ -41,13 +72,20 @@ class CardController extends GetxController {
    update();
   }
 
-  void increaseCount (){
-    count ++ ;
+  void deleteProductFromFire (String productId) async {
+    await FireBaseFun.deleteProductFromCard(productId).then((value) {
+      Get.back();
+      Get.snackbar("deleted success", "Product deleted to card");
+    });
+  }
+
+  void increaseCount (int index )async{
+    cardList[index].quantity ++ ;
     update();
   }
-  void decreaseCount (){
-    if (count > 1){
-      count -- ;
+  void decreaseCount (int index){
+    if (cardList[index].quantity > 1){
+      cardList[index].quantity -- ;
     }
     update();
   }

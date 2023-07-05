@@ -4,7 +4,10 @@ class CardModel {
   String title ;
   String image  ;
   String price ;
-  CardModel ({required this.price , required this.title , required this.image ,this.id = "",});
+  int quantity ;
+
+  CardModel ({required this.price , required this.title,
+  required this.quantity, required this.image ,this.id = "",});
 
   CardModel.fromJson (Map <String , dynamic>? json) :
         this (
@@ -12,6 +15,7 @@ class CardModel {
           image: json["image"] as String ,
           title:  json ["title"] as String ,
           price: json ["price"] as String ,
+         quantity: json ["quantity"] as int ,
 
       );
 
@@ -20,7 +24,8 @@ class CardModel {
       "title" : title ,
       "image" : image ,
       "id" : id ,
-      "price" : price
+      "price" : price ,
+      "quantity" : quantity ,
     };
   }
 }

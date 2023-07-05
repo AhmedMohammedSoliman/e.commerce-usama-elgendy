@@ -10,6 +10,7 @@ import '../controllers/explore_controller.dart';
 class ExploreView extends GetWidget<ExploreController> {
   const ExploreView({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
    return Padding(

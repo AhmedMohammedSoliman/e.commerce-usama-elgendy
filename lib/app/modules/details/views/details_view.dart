@@ -11,9 +11,9 @@ import '../controllers/details_controller.dart';
 class DetailsView extends GetView<DetailsController> {
   BestProductsModel bestProduct ;
   int index ;
-  CardController cardController = Get.put(CardController());
 
   DetailsView({Key? key , required this.bestProduct , required this.index}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class DetailsView extends GetView<DetailsController> {
                   ),
                 ) ,
                 GetBuilder(
-                  init: DetailsController(),
+                  init: CardController(),
                     builder: (controller){
                     return Expanded(
                       child: Container(
@@ -56,8 +56,6 @@ class DetailsView extends GetView<DetailsController> {
                               bestProduct.title,
                               bestProduct.price,
                               bestProduct.image ,
-                              cardController ,
-                              cardController.cardList[index]
                              );
                         }, child: textWidget(
                           fontWeight: FontWeight.bold ,

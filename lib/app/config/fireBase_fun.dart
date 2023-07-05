@@ -66,4 +66,15 @@ class FireBaseFun {
     return querySnapShot.docs.map((e) => e.data()).toList();
   }
 
+  static Future<void> deleteProductFromCard (String productId)async{
+    return await getCardCollectionFromFire().doc(productId).delete();
+  }
+
+  static Future <void> updateCardProduct (String productId ,int newQuantity ,
+      String price) async {
+   return await getCardCollectionFromFire().doc(productId).update({
+      "price" : "${int.parse(price)*newQuantity}",
+      "quantity" : newQuantity
+    });
+  }
 }
