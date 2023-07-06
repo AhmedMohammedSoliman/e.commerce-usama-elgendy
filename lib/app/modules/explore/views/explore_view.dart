@@ -1,9 +1,12 @@
 import 'package:e_commerce_usama_elgendy/app/config/fireBase_fun.dart';
 import 'package:e_commerce_usama_elgendy/app/data/category_model.dart';
+import 'package:e_commerce_usama_elgendy/app/modules/auth/views/login_view.dart';
 import 'package:e_commerce_usama_elgendy/app/modules/details/views/details_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import '../../../config/local_storage_prefs.dart';
 import '../../auth/views/widgets/text_widget.dart';
 import '../controllers/explore_controller.dart';
 
@@ -47,7 +50,10 @@ class ExploreView extends GetWidget<ExploreController> {
                   InkWell(
                       onTap: ()async{
                         FirebaseAuth auth = FirebaseAuth.instance;
+                        await GoogleSignIn().signOut();
                         await auth.signOut();
+                        LocalStoragePrefs.deleteUserFromCache();
+                        Get.offAll(LoginView());
                       },
                       child: Icon(Icons.logout , color: Colors.black87,))
                 ],

@@ -18,8 +18,14 @@ class FireBaseFun {
     String userId = FirebaseAuth.instance.currentUser!.uid ;
     var collection = getCollectionFromFirebase();
     var doc = collection.doc() ;
-    userModel.id = userId ;
+    userModel.id = doc.id ;
     return await doc.set(userModel);
+  }
+
+  static Future<UserModel?> getUserFromFire (String userId) async {
+    var documentSnapShot =  await getCollectionFromFirebase().doc(userId).get();
+    print(documentSnapShot.data());
+    return documentSnapShot.data();
   }
 
   /// category

@@ -7,13 +7,13 @@ import 'login_view.dart';
 
 class ControllView extends GetWidget <AuthController> {
 
-  @override
-  AuthController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Obx((){
-      return controller.userEmail != null ? HomeView() : LoginView();
-    });
+    return GetBuilder(
+      init: AuthController (),
+        builder: (controller){
+        return controller.userEmail != null ? HomeView() : LoginView();
+        });
   }
 }

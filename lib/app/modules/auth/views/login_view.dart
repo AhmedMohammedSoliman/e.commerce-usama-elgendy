@@ -29,142 +29,147 @@ class LoginView extends GetView<AuthController> {
                 )
               ]
             ),
-            child: Form(
-              key: controller.loginFormKey,
-              child: SingleChildScrollView(
-                child: Column (
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       textWidget(
-                         text: "Welcome" ,
-                         fontWeight: FontWeight.bold ,
-                         fontSize: 20,
-                       ),
-                       InkWell(
-                         onTap: (){
-                           Get.to(RegisterView());
-                         },
-                         child: textWidget(
-                           text: "Sign up" ,
-                           fontWeight: FontWeight.bold ,
-                           color: Colors.green
-                         ),
-                       ),
-                     ],
-                   ) ,
-                    SizedBox(height: 5,),
-                    Row(
+            child: GetBuilder(
+              init: AuthController (),
+              builder: (controller){
+                return Form(
+                  key: controller.loginFormKey,
+                  child: SingleChildScrollView(
+                    child: Column (
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        textWidget(
-                          text: "Sign in to continue" ,
-                          fontSize: 16,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            textWidget(
+                              text: "Welcome" ,
+                              fontWeight: FontWeight.bold ,
+                              fontSize: 20,
+                            ),
+                            InkWell(
+                              onTap: (){
+                                Get.to(RegisterView());
+                              },
+                              child: textWidget(
+                                  text: "Sign up" ,
+                                  fontWeight: FontWeight.bold ,
+                                  color: Colors.green
+                              ),
+                            ),
+                          ],
+                        ) ,
+                        SizedBox(height: 5,),
+                        Row(
+                          children: [
+                            textWidget(
+                              text: "Sign in to continue" ,
+                              fontSize: 16,
+                            ),
+                          ],
+                        ) ,
+                        SizedBox(height: 40,),
+                        Row(
+                          children: [
+                            textWidget(
+                              text: "Email" ,
+                              fontWeight: FontWeight.bold ,
+                              fontSize: 16,
+                            ),
+                          ],
                         ),
-                      ],
-                    ) ,
-                    SizedBox(height: 40,),
-                    Row(
-                      children: [
-                        textWidget(
-                          text: "Email" ,
-                          fontWeight: FontWeight.bold ,
-                          fontSize: 16,
+                        TextFieldWidget(hint: "ahmedellewaa@gmail.com", controller:
+                        controller.emailController,
+                          validator: (text){
+                            if (text == null || text.trim().isEmpty){
+                              return "Please email is required" ;
+                            }else {
+                              return null ;
+                            }
+                          }, onChanged: (text){
+                            controller.email = text ;
+                          },),
+                        SizedBox(height: 40,),
+                        Row(
+                          children: [
+                            textWidget(
+                              text: "Password" ,
+                              fontWeight: FontWeight.bold ,
+                              fontSize: 16,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    TextFieldWidget(hint: "ahmedellewaa@gmail.com", controller:
-                      controller.emailController,
-                    validator: (text){
-                      if (text == null || text.trim().isEmpty){
-                        return "Please email is required" ;
-                      }else {
-                        return null ;
-                      }
-                    }, onChanged: (text){
-                       controller.email = text ;
-                      },),
-                    SizedBox(height: 40,),
-                    Row(
-                      children: [
-                        textWidget(
-                          text: "Password" ,
-                          fontWeight: FontWeight.bold ,
-                          fontSize: 16,
+                        TextFieldWidget(hint: "**********",
+                          controller: controller.passwordController,
+                          validator: (text){
+                            if (text == null || text.trim().isEmpty){
+                              return "Please password is required" ;
+                            }else {
+                              return null ;
+                            }
+                          }, onChanged: (text){
+                            controller.password = text ;
+                          },) ,
+                        SizedBox(height: 20,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            textWidget(
+                              text: "Forget password ? " ,
+                              fontWeight: FontWeight.normal ,
+                              fontSize: 16,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    TextFieldWidget(hint: "**********",
-                    controller: controller.passwordController,
-                      validator: (text){
-                        if (text == null || text.trim().isEmpty){
-                          return "Please password is required" ;
-                        }else {
-                          return null ;
-                        }
-                      }, onChanged: (text){
-                        controller.password = text ;
-                      },) ,
-                      SizedBox(height: 20,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
+                        SizedBox(height: 20,),
+                        Container(
+                          width: MediaQuery.of(context).size.width*0.7,
+                          child: buttonWidget (
+                            text: "SIGN IN",
+                            textColor: Colors.white,
+                            onPressed: (){
+                              if (controller.loginFormKey.currentState!.validate() == true){
+                                controller.signInEmailPassword();
+                              }
+                            } ,
+                          ),
+                        ) ,
+                        SizedBox(height: 20,),
                         textWidget(
-                          text: "Forget password ? " ,
+                          text: "--- OR ---" ,
                           fontWeight: FontWeight.normal ,
                           fontSize: 16,
                         ),
+                        SizedBox(height: 40,),
+                        Container(
+                          width: MediaQuery.of(context).size.width*0.7,
+                          child: buttonWidget (
+                            backGround: Colors.white,
+                            border: Colors.black,
+                            text: "Sign in with faceBook",
+                            textColor: Colors.black,
+                            onPressed: (){
+                            } ,
+                          ),
+                        ) ,
+                        SizedBox(height: 10,),
+                        Container(
+                          width: MediaQuery.of(context).size.width*0.7,
+                          child: buttonWidget (
+                            backGround: Colors.white,
+                            border: Colors.black,
+                            text: "Sign in with google",
+                            textColor: Colors.black,
+                            onPressed: (){
+                              controller.signInGoogle();
+                            } ,
+                          ),
+                        ) ,
                       ],
                     ),
-                    SizedBox(height: 20,),
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.7,
-                      child: buttonWidget (
-                        text: "SIGN IN",
-                        textColor: Colors.white,
-                        onPressed: (){
-                         if (controller.loginFormKey.currentState!.validate() == true){
-                           controller.signInEmailPassword();
-                         }
-                        } ,
-                      ),
-                    ) ,
-                    SizedBox(height: 20,),
-                    textWidget(
-                      text: "--- OR ---" ,
-                      fontWeight: FontWeight.normal ,
-                      fontSize: 16,
-                    ),
-                    SizedBox(height: 40,),
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.7,
-                      child: buttonWidget (
-                        backGround: Colors.white,
-                        border: Colors.black,
-                        text: "Sign in with faceBook",
-                        textColor: Colors.black,
-                        onPressed: (){
-                        } ,
-                      ),
-                    ) ,
-                    SizedBox(height: 10,),
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.7,
-                      child: buttonWidget (
-                        backGround: Colors.white,
-                        border: Colors.black,
-                        text: "Sign in with google",
-                        textColor: Colors.black,
-                        onPressed: (){
-                           controller.signInGoogle();
-                        } ,
-                      ),
-                    ) ,
-                  ],
-                ),
-              ),
-            ),
+                  ),
+                );
+              },
+            )
           ),
         )
       ),

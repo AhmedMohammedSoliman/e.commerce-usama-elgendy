@@ -1,11 +1,12 @@
 import 'package:e_commerce_usama_elgendy/app/config/fireBase_fun.dart';
 import 'package:e_commerce_usama_elgendy/app/data/user_model.dart';
+import 'package:e_commerce_usama_elgendy/app/modules/auth/views/control_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../../config/local_storage_prefs.dart';
 
-import '../../home/views/home_view.dart';
 
 class AuthController extends GetxController {
 
@@ -56,13 +57,24 @@ class AuthController extends GetxController {
           name: auth.currentUser!.displayName!,
           email: auth.currentUser!.email!,
           pic: ""));
-
+      
+      LocalStoragePrefs.saveUser(UserModel(
+          name: auth.currentUser!.displayName!,
+          email: auth.currentUser!.email!,
+          pic: ""));
     });
+    Get.offAll(ControllView());
   }
 
   void signInEmailPassword ()async{
-    await auth.signInWithEmailAndPassword(email: email, password: password).then((value) {
-      Get.offAll(HomeView());
+    await auth.signInWithEmailAndPassword(email: email, password: password).then((value) async {
+      await FireBaseFun.getUserFromFire(value.user!.uid).then((value) async {
+       if (value != null){
+         await LocalStoragePrefs.saveUser(value);
+       }
+       print("not user");
+      });
+      Get.offAll(ControllView());
     });
   }
 
@@ -70,7 +82,9 @@ class AuthController extends GetxController {
     await auth.createUserWithEmailAndPassword(email: email, password: password).then((value)async {
       await FireBaseFun.addUserToFireStore(UserModel(
           name: name, email: email, pic: ""));
-      Get.offAll(HomeView());
+      await LocalStoragePrefs.saveUser(UserModel(
+          name: name, email: email, pic: ""));
+      Get.offAll(ControllView());
     });
   }
 }
